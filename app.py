@@ -2,11 +2,16 @@ import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# retrieve file from 'static/images' directory
+@app.route('/static/images/<filename>')
+def send_image(filename):
+    return send_from_directory("static/images", filename)
+
 
 def allowed_file(filename):
     return '.' in filename and \
